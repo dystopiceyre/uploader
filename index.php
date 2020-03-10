@@ -18,4 +18,17 @@ $dir = "uploads/";
     <input type="file" name="fileToUpload">
     <input type="submit" value="Upload File" name="submit">
 </form>
+<?php
+
+//if a file has been submitted
+if (isset($_FILES['fileToUpload'])) {
+    $file = $_FILES['fileToUpload'];
+    //move file to upload directory
+    move_uploaded_file($file['tmp_name'], $dir.$file['name']);
+    echo "<p class='success'>Uploaded {$file['name']} successfully!";
+    //store the file name into the database
+    $sql = "INSERT INTO uploads(filename) VALUES ('{$file['name']}')";
+    $db->exec($sql);
+}
+?>
 </html>
